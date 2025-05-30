@@ -3,14 +3,15 @@ import { KokoroTTS } from 'kokoro-js'
 import path from 'path'
 import fs from 'fs'
 
-ipcMain.handle('generate-audio', async (_, text) => {
+ipcMain.handle('generate-audio-kokoro', async (_, text) => {
   const model_id = 'onnx-community/Kokoro-82M-v1.0-ONNX'
   const tts = await KokoroTTS.from_pretrained(model_id, {
     dtype: 'q8',
     device: 'cpu',
   })
 
-  const audio = await tts.generate(text, { voice: 'af_heart' })
+  const audio = await tts.generate(text, { voice: 'bf_emma' })
+
   const outputPath = path.join(app.getPath('userData'), 'output.wav')
   await audio.save(outputPath)
 

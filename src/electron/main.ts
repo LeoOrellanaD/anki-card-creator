@@ -2,9 +2,8 @@ import { app, BrowserWindow } from 'electron'
 import path from 'path'
 import { isDev } from './utils.js'
 import { getPreloadPath } from './pathResolver.js'
-import './ipc/ttsHandler.js';
-
-
+import './ipc/ttsHandlerKokoro.js'
+import './ipc/ttsHandlerEdge.js'
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
