@@ -1,23 +1,38 @@
 import { useState } from 'react'
-import voices from './data/voices'
+import voicesEdge from './data/voices-edge'
+import voicesKokoro from './data/voice-kokoro'
 
 function App() {
   const [text, setText] = useState('')
   const [audioUrl, setAudioUrl] = useState('')
   const [ttsEngine, setTtsEngine] = useState<'kokoro' | 'edge'>('kokoro')
-  const [voice, setVoice] = useState(voices[0].voice)
-  const [lang, setLang] = useState(voices[0].lang)
+
+  const langsEdge = Object.keys(voicesEdge)
+  const langsKokoro = Object.keys(voicesKokoro)
+
+  const [lang, setLang] = useState(
+    ttsEngine === 'edge' ? langsEdge[0] : langsKokoro[0]
+  )
+
+  const [voice, setVoice] = useState(
+    ttsEngine === 'edge'
+      ? voicesEdge[langsEdge[0]][0].voice
+      : voicesKokoro[langsKokoro[0]][0].voice
+  )
 
   const handleGenerate = async () => {
     if (ttsEngine === 'kokoro') {
-      const base64Audio = await window.electron.generateAudioKokoro(text)
-      setAudioUrl(base64Audio)
-    } else {
-      const base64Audio = await window.electron.generateAudioEdge(
+      const base64Audio = await window.electron.generateAudioKokoro({
         text,
         voice,
-        lang
-      )
+      })
+      setAudioUrl(base64Audio)
+    } else {
+      const base64Audio = await window.electron.generateAudioEdge({
+        text,
+        voice,
+        lang,
+      })
       setAudioUrl(base64Audio)
     }
   }
@@ -26,7 +41,20 @@ function App() {
     <div>
       <select
         value={ttsEngine}
-        onChange={(e) => setTtsEngine(e.target.value as any)}
+        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          const engine = e.target.value as 'kokoro' | 'edge'
+          setTtsEngine(engine)
+
+          if (engine === 'edge') {
+            const defaultLang = langsEdge[0]
+            setLang(defaultLang)
+            setVoice(voicesEdge[defaultLang][0].voice)
+          } else {
+            const defaultLang = langsKokoro[0]
+            setLang(defaultLang)
+            setVoice(voicesKokoro[defaultLang][0].voice)
+          }
+        }}
       >
         <option value='kokoro'>Kokoro TTS</option>
         <option value='edge'>Edge TTS</option>
@@ -34,8 +62,50 @@ function App() {
 
       {ttsEngine === 'edge' && (
         <>
+          <select
+            value={lang}
+            onChange={(e) => {
+              const newLang = e.target.value
+              setLang(newLang)
+              setVoice(voicesEdge[newLang][0].voice)
+            }}
+          >
+            {langsEdge.map((l) => (
+              <option key={l} value={l}>
+                {l}
+              </option>
+            ))}
+          </select>
+
           <select value={voice} onChange={(e) => setVoice(e.target.value)}>
-            {voices.map(({ label, voice }) => (
+            {voicesEdge[lang].map(({ label, voice }) => (
+              <option key={voice} value={voice}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
+
+      {ttsEngine === 'kokoro' && (
+        <>
+          <select
+            value={lang}
+            onChange={(e) => {
+              const newLang = e.target.value
+              setLang(newLang)
+              setVoice(voicesKokoro[newLang][0].voice)
+            }}
+          >
+            {langsKokoro.map((l) => (
+              <option key={l} value={l}>
+                {l}
+              </option>
+            ))}
+          </select>
+
+          <select value={voice} onChange={(e) => setVoice(e.target.value)}>
+            {voicesKokoro[lang].map(({ label, voice }) => (
               <option key={voice} value={voice}>
                 {label}
               </option>

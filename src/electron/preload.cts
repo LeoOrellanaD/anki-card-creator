@@ -3,10 +3,10 @@ const electron = require('electron')
 const { contextBridge, ipcRenderer } = electron
 
 contextBridge.exposeInMainWorld('electron', {
-  generateAudioKokoro: (text: string) =>
-    ipcRenderer.invoke('generate-audio-kokoro', text),
-  generateAudioEdge: (text: string, voice?: string, lang?: string) =>
-    ipcRenderer.invoke('generate-audio-edge', text, voice, lang),
+  generateAudioKokoro: (payload: ttsKokoro) =>
+    ipcRenderer.invoke('generate-audio-kokoro', payload),
+  generateAudioEdge: (payload: ttsEdge) =>
+    ipcRenderer.invoke('generate-audio-edge', payload),
 
   // pepe: () => console.log('pepe'),
-})
+} satisfies Window['electron']) // use to aply the type from the window object instead of doing this for each function
