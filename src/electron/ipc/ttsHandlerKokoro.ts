@@ -1,8 +1,9 @@
-import { ipcMain, app } from 'electron'
+import { app } from 'electron'
 import { KokoroTTS } from 'kokoro-js'
 import path from 'path'
 import fs from 'fs'
 import { saveAudioFile } from '../utils/audioSaver.js'
+import { ipcMainHandle } from '../utils.js'
 
 let ttsInstance: KokoroTTS | null = null
 const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX'
@@ -28,7 +29,7 @@ function encodeFileToBase64(filePath: string): string {
   return buffer.toString('base64')
 }
 
-ipcMain.handle('generate-audio-kokoro', async (_, payload: ttsKokoro) => {
+ipcMainHandle('generateAudioKokoro', async (payload: ttsKokoro) => {
   const { text, voice } = payload
 
   try {

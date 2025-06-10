@@ -1,8 +1,9 @@
 import path from 'path'
 import fs from 'fs'
-import { app, ipcMain } from 'electron'
+import { app } from 'electron'
 import { EdgeTTS } from 'node-edge-tts'
 import { saveAudioFile } from '../utils/audioSaver.js'
+import { ipcMainHandle } from '../utils.js'
 
 const OUTPUT_FORMAT = 'audio-24khz-96kbitrate-mono-mp3'
 
@@ -10,7 +11,7 @@ function getTempPath(): string {
   return path.join(app.getPath('userData'), 'temp-edge.mp3')
 }
 
-ipcMain.handle('generate-audio-edge', async (_, payload: ttsEdge) => {
+ipcMainHandle('generateAudioEdge', async (payload: ttsEdge) => {
   const { text, voice, lang } = payload
 
   const tts = new EdgeTTS({

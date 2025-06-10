@@ -22,13 +22,13 @@ function App() {
 
   const handleGenerate = async () => {
     if (ttsEngine === 'kokoro') {
-      const base64Audio = await window.electron.generateAudioKokoro({
+      const base64Audio = await window.electron.getAudioKokoro({
         text,
         voice,
       })
       setAudioUrl(base64Audio)
     } else {
-      const base64Audio = await window.electron.generateAudioEdge({
+      const base64Audio = await window.electron.getAudioEdge({
         text,
         voice,
         lang,

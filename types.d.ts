@@ -1,24 +1,19 @@
 interface Window {
   electron: {
-    generateAudioKokoro: (payload: ttsKokoro) => Promise<string>
-    generateAudioEdge: (payload: ttsEdge) => Promise<string>
+    getAudioKokoro: (payload: ttsKokoro) => Promise<string>
+    getAudioEdge: (payload: ttsEdge) => Promise<string>
   }
-}
-
-type EventPayloadMapping = {
-  generateAudioKokoro: ttsKokoro
-  generateAudioEdge: ttsEdge
-}
-
-type ttsKokoro = {
-  text: string
-  voice: voice
 }
 
 type ttsEdge = {
   text: string
   voice: string
   lang: string //  I need to do a review of this to understand if this is really necessary or something that comes with the voice by default.
+}
+
+type ttsKokoro = {
+  text: string
+  voice: voice
 }
 
 type VoiceOption = {
@@ -28,4 +23,9 @@ type VoiceOption = {
 
 type VoiceMap = {
   [lang: string]: VoiceOption[]
+}
+
+type EventPayloadMapping = {
+  generateAudioEdge: [ttsEdge, string] // [INPUT, OUTPUT]
+  generateAudioKokoro: [ttsKokoro, string]
 }
