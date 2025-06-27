@@ -2,8 +2,14 @@ import path from 'path'
 import fs from 'fs'
 import { app } from 'electron'
 
+export function getDirProject(): string {
+  const dir = path.join(app.getPath('userData'), 'Cards-Generator')
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+  return dir
+}
+
 export function getTempPath(ext: string): string {
-  return path.join(app.getPath('userData'), `temp-${Date.now()}.${ext}`)
+  return path.join(getDirProject(), `temp-${Date.now()}.${ext}`)
 }
 
 export async function audioToBase64(
