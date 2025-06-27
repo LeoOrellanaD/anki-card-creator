@@ -10,7 +10,7 @@ const voicesKokoro: VoiceMap = {
     { label: 'Lewis (Male)', voice: 'bm_lewis' },
   ],
   'English (American)': [
-    { label: 'Heart (Female)', voice: 'bf_heart' },
+    { label: 'Heart (Female)', voice: 'af_heart' },
     { label: 'Alloy (Female)', voice: 'af_alloy' },
     { label: 'Aoede (Female)', voice: 'af_aoede' },
     { label: 'Bella (Female)', voice: 'af_bella' },

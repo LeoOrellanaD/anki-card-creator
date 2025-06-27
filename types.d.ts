@@ -8,7 +8,7 @@ interface Window {
 type ttsEdge = {
   text: string
   voice: string
-  lang: string //  I need to do a review of this to understand if this is really necessary or something that comes with the voice by default.
+  lang: string
 }
 
 type ttsKokoro = {
