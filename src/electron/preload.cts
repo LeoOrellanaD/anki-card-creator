@@ -5,7 +5,9 @@ const { contextBridge, ipcRenderer } = electron
 contextBridge.exposeInMainWorld('electron', {
   getAudioEdge: (payload) => ipcInvoke('generateAudioEdge', payload),
   getAudioKokoro: (payload) => ipcInvoke('generateAudioKokoro', payload),
-} satisfies Window['electron']) // use to aply the type from the window object instead of doing this for each function
+  createUser: (payload) => ipcInvoke('createUser', payload),
+  getUsers: () => ipcInvoke('getUsers', undefined),
+} satisfies Window['electron']) // use to apply the type from the window object instead of doing this for each function
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(
   key: Key,

@@ -35,21 +35,21 @@ export async function handleKokoroTTS(payload: ttsKokoro) {
     return await audioToBase64(finalPath, 'audio/wav')
   } catch (error) {
     console.error('[ERROR kokoro]', error)
-    throw new Error('Error al generar audio Kokoro')
+    throw new Error('error to generate audio')
   } finally {
     if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
   }
 }
 
 export async function testInternetConnection() {
-  log('[kokoro] verificando conexión a Internet...')
+  log('[kokoro] verify connection a Internet...')
 
   try {
     const res = await fetch('https://huggingface.co', { method: 'HEAD' })
     log(`${res}`)
-    log('[kokoro] conexión exitosa')
+    log('[kokoro] successful connection')
   } catch (err) {
     log(`${err}`)
-    log('[kokoro] no hay conexión a internet o está bloqueada')
+    log('[kokoro] fail internet connection')
   }
 }

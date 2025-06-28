@@ -1,5 +1,9 @@
 {
   "appId": "com.lyleo.anki-card-generator",
+  "asarUnpack": [
+    "**/node_modules/better-sqlite3/**/*",
+    "**/node_modules/node-edge-tts/**/*"
+  ],
   "files": ["dist-electron", "dist-react"],
   "extraResources": ["dist-electron/preload.cjs", "src/assets/**"],
   "icon": "./spacekat.ico",

@@ -1,4 +1,4 @@
-const voicesEdge : VoiceMap = {
+const voicesEdge: VoiceMap = {
   'English (United Kingdom)': [
     { label: 'Sonia (Female)', voice: 'en-GB-SoniaNeural' },
     { label: 'Ryan (Male)', voice: 'en-GB-RyanNeural' },
@@ -20,7 +20,6 @@ const voicesEdge : VoiceMap = {
       voice: 'de-DE-SeraphinaMultilingualNeural',
     },
   ],
-  
 }
 
 export default voicesEdge

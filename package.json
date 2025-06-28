@@ -15,16 +15,20 @@
     "transpile:electron": "tsc -project src/electron/tsconfig.json",
     "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
     "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
-    "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64"
+    "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
+    "postinstall": "@electron/rebuild"
   },
   "dependencies": {
+    "better-sqlite3": "^12.1.1",
     "kokoro-js": "^1.2.1",
     "node-edge-tts": "^1.2.8",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
+    "@electron/rebuild": "^4.0.1",
     "@eslint/js": "^9.25.0",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.9.0",

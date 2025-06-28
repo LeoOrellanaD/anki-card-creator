@@ -17,7 +17,7 @@ export async function handleEdgeTTS(payload: ttsEdge) {
     return await audioToBase64(finalPath, 'audio/mp3')
   } catch (err) {
     console.error('[ERROR edge]', err)
-    throw new Error('Error al generar audio Edge')
+    throw new Error('audio generation error')
   } finally {
     if (fs.existsSync(tempPath)) fs.unlinkSync(tempPath)
   }

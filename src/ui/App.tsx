@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import voicesEdge from './data/voices-edge'
 import voicesKokoro from './data/voice-kokoro'
 
@@ -6,6 +6,8 @@ function App() {
   const [text, setText] = useState('')
   const [audioUrl, setAudioUrl] = useState('')
   const [ttsEngine, setTtsEngine] = useState<'kokoro' | 'edge'>('kokoro')
+  const [usernameInput, setUsernameInput] = useState('')
+  const [users, setUsers] = useState<User[]>([])
 
   const langsEdge = Object.keys(voicesEdge)
   const langsKokoro = Object.keys(voicesKokoro)
@@ -36,6 +38,22 @@ function App() {
       setAudioUrl(base64Audio)
     }
   }
+
+  const handleCreateUser = async () => {
+    if (!usernameInput.trim()) return
+    await window.electron.createUser({ username: usernameInput })
+    setUsernameInput('')
+    loadUsers()
+  }
+
+  const loadUsers = async () => {
+    const result = await window.electron.getUsers()
+    setUsers(result)
+  }
+
+  useEffect(() => {
+    loadUsers()
+  }, [])
 
   return (
     <div>
@@ -123,6 +141,24 @@ function App() {
       <button onClick={handleGenerate}>Generar audio</button>
 
       {audioUrl && <audio src={audioUrl} controls autoPlay />}
+
+      <hr />
+      <h3>Test Base de Datos (Usuarios)</h3>
+
+      <input
+        value={usernameInput}
+        onChange={(e) => setUsernameInput(e.target.value)}
+        placeholder='Nombre de usuario'
+      />
+      <button onClick={handleCreateUser}>Crear usuario</button>
+
+      <ul>
+        {users.map((user) => (
+          <li key={user.user_id}>
+            {user.user_id} - {user.username}
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
