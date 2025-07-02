@@ -6,6 +6,7 @@ import { initDatabase } from './db/init.js'
 import './ipc/ttsHandlerKokoro.js'
 import './ipc/ttsHandlerEdge.js'
 import './ipc/UserHandler.js'
+import './ipc/LanguageHandler.js'
 
 app.on('ready', () => {
   initDatabase()

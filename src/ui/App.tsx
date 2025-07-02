@@ -9,6 +9,10 @@ function App() {
   const [usernameInput, setUsernameInput] = useState('')
   const [users, setUsers] = useState<User[]>([])
 
+  const [languageCode, setLanguageCode] = useState('')
+  const [languageName, setLanguageName] = useState('')
+  const [languages, setLanguages] = useState<Language[]>([])
+
   const langsEdge = Object.keys(voicesEdge)
   const langsKokoro = Object.keys(voicesKokoro)
 
@@ -51,8 +55,25 @@ function App() {
     setUsers(result)
   }
 
+  const handleCreateLanguage = async () => {
+    if (!languageCode.trim() || !languageName.trim()) return
+    await window.electron.createLanguage({
+      code: languageCode,
+      language_name: languageName,
+    })
+    setLanguageCode('')
+    setLanguageName('')
+    loadLanguages()
+  }
+
+  const loadLanguages = async () => {
+    const langs = await window.electron.getLanguages()
+    setLanguages(langs)
+  }
+
   useEffect(() => {
     loadUsers()
+    loadLanguages()
   }, [])
 
   return (
@@ -156,6 +177,29 @@ function App() {
         {users.map((user) => (
           <li key={user.user_id}>
             {user.user_id} - {user.username}
+          </li>
+        ))}
+      </ul>
+
+      <hr />
+      <h3>Test Base de Datos (Lenguajes)</h3>
+
+      <input
+        value={languageCode}
+        onChange={(e) => setLanguageCode(e.target.value)}
+        placeholder='Código (ej: en)'
+      />
+      <input
+        value={languageName}
+        onChange={(e) => setLanguageName(e.target.value)}
+        placeholder='Nombre (ej: English)'
+      />
+      <button onClick={handleCreateLanguage}>Crear lenguaje</button>
+
+      <ul>
+        {languages.map((lang) => (
+          <li key={lang.language_id}>
+            {lang.language_id} - [{lang.code}] {lang.language_name}
           </li>
         ))}
       </ul>

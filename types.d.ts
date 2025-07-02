@@ -4,6 +4,9 @@ interface Window {
     getAudioEdge: (payload: ttsEdge) => Promise<string>
     createUser: (payload: CreateUserInput) => Promise<number>
     getUsers: () => Promise<User[]>
+    createLanguage: (payload: CreateLanguageInput) => Promise<number>
+    getLanguage: (id: number) => Promise<Language | undefined>
+    getLanguages: () => Promise<Language[]>
   }
 }
 
@@ -32,6 +35,9 @@ type EventPayloadMapping = {
   generateAudioKokoro: [ttsKokoro, string]
   createUser: [CreateUserInput, number]
   getUsers: [undefined, User[]]
+  createLanguage: [CreateLanguageInput, number]
+  getLanguage: [number, Language | undefined]
+  getLanguages: [undefined, Language[]]
 }
 
 interface User {
@@ -46,6 +52,8 @@ interface Language {
   code: string
   language_name: string
 }
+
+type CreateLanguageInput = Omit<Language, 'language_id'>
 
 interface Card {
   id: number

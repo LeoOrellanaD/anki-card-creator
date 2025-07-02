@@ -12,7 +12,7 @@ export const initDatabase = () => {
 
   db.prepare(
     `
-    CREATE TABLE IF NOT EXISTS language (
+    CREATE TABLE IF NOT EXISTS languages (
       language_id INTEGER PRIMARY KEY AUTOINCREMENT,
       code CHAR(2) NOT NULL,
       language_name VARCHAR(50) NOT NULL
