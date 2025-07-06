@@ -1,46 +1,33 @@
 import { useEffect, useState } from 'react'
 import voicesEdge from './data/voices-edge'
-import voicesKokoro from './data/voice-kokoro'
 
 function App() {
   const [text, setText] = useState('')
   const [audioUrl, setAudioUrl] = useState('')
-  const [ttsEngine, setTtsEngine] = useState<'kokoro' | 'edge'>('kokoro')
   const [usernameInput, setUsernameInput] = useState('')
   const [users, setUsers] = useState<User[]>([])
-
-  const [languageCode, setLanguageCode] = useState('')
-  const [languageName, setLanguageName] = useState('')
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+  const [selectedLanguageId, setSelectedLanguageId] = useState<number | null>(
+    null
+  )
   const [languages, setLanguages] = useState<Language[]>([])
 
   const langsEdge = Object.keys(voicesEdge)
-  const langsKokoro = Object.keys(voicesKokoro)
-
-  const [lang, setLang] = useState(
-    ttsEngine === 'edge' ? langsEdge[0] : langsKokoro[0]
-  )
-
-  const [voice, setVoice] = useState(
-    ttsEngine === 'edge'
-      ? voicesEdge[langsEdge[0]][0].voice
-      : voicesKokoro[langsKokoro[0]][0].voice
-  )
+  const [lang, setLang] = useState(langsEdge[0])
+  const [voice, setVoice] = useState(voicesEdge[langsEdge[0]][0].voice)
 
   const handleGenerate = async () => {
-    if (ttsEngine === 'kokoro') {
-      const base64Audio = await window.electron.getAudioKokoro({
-        text,
-        voice,
-      })
-      setAudioUrl(base64Audio)
-    } else {
-      const base64Audio = await window.electron.getAudioEdge({
-        text,
-        voice,
-        lang,
-      })
-      setAudioUrl(base64Audio)
-    }
+    const base64Audio = await window.electron.getAudioEdge({
+      text,
+      voice,
+      lang,
+    })
+    setAudioUrl(base64Audio)
+  }
+
+  const getCurrentDate = (): string => {
+    const now = new Date()
+    return now.toISOString().split('T')[0]
   }
 
   const handleCreateUser = async () => {
@@ -55,20 +42,19 @@ function App() {
     setUsers(result)
   }
 
-  const handleCreateLanguage = async () => {
-    if (!languageCode.trim() || !languageName.trim()) return
-    await window.electron.createLanguage({
-      code: languageCode,
-      language_name: languageName,
-    })
-    setLanguageCode('')
-    setLanguageName('')
-    loadLanguages()
-  }
-
   const loadLanguages = async () => {
     const langs = await window.electron.getLanguages()
     setLanguages(langs)
+  }
+
+  const handleCreateCard = async () => {
+    if (!selectedUserId || !selectedLanguageId) return
+    const card = {
+      date: getCurrentDate(),
+      language_id: selectedLanguageId,
+      user_id: selectedUserId,
+    }
+    await window.electron.createCard(card)
   }
 
   useEffect(() => {
@@ -79,79 +65,27 @@ function App() {
   return (
     <div>
       <select
-        value={ttsEngine}
-        onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-          const engine = e.target.value as 'kokoro' | 'edge'
-          setTtsEngine(engine)
-
-          if (engine === 'edge') {
-            const defaultLang = langsEdge[0]
-            setLang(defaultLang)
-            setVoice(voicesEdge[defaultLang][0].voice)
-          } else {
-            const defaultLang = langsKokoro[0]
-            setLang(defaultLang)
-            setVoice(voicesKokoro[defaultLang][0].voice)
-          }
+        value={lang}
+        onChange={(e) => {
+          const newLang = e.target.value
+          setLang(newLang)
+          setVoice(voicesEdge[newLang][0].voice)
         }}
       >
-        <option value='kokoro'>Kokoro TTS</option>
-        <option value='edge'>Edge TTS</option>
+        {langsEdge.map((l) => (
+          <option key={l} value={l}>
+            {l}
+          </option>
+        ))}
       </select>
 
-      {ttsEngine === 'edge' && (
-        <>
-          <select
-            value={lang}
-            onChange={(e) => {
-              const newLang = e.target.value
-              setLang(newLang)
-              setVoice(voicesEdge[newLang][0].voice)
-            }}
-          >
-            {langsEdge.map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-
-          <select value={voice} onChange={(e) => setVoice(e.target.value)}>
-            {voicesEdge[lang].map(({ label, voice }) => (
-              <option key={voice} value={voice}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </>
-      )}
-
-      {ttsEngine === 'kokoro' && (
-        <>
-          <select
-            value={lang}
-            onChange={(e) => {
-              const newLang = e.target.value
-              setLang(newLang)
-              setVoice(voicesKokoro[newLang][0].voice)
-            }}
-          >
-            {langsKokoro.map((l) => (
-              <option key={l} value={l}>
-                {l}
-              </option>
-            ))}
-          </select>
-
-          <select value={voice} onChange={(e) => setVoice(e.target.value)}>
-            {voicesKokoro[lang].map(({ label, voice }) => (
-              <option key={voice} value={voice}>
-                {label}
-              </option>
-            ))}
-          </select>
-        </>
-      )}
+      <select value={voice} onChange={(e) => setVoice(e.target.value)}>
+        {voicesEdge[lang].map(({ label, voice }) => (
+          <option key={voice} value={voice}>
+            {label}
+          </option>
+        ))}
+      </select>
 
       <input
         value={text}
@@ -184,25 +118,49 @@ function App() {
       <hr />
       <h3>Test Base de Datos (Lenguajes)</h3>
 
-      <input
-        value={languageCode}
-        onChange={(e) => setLanguageCode(e.target.value)}
-        placeholder='Código (ej: en)'
-      />
-      <input
-        value={languageName}
-        onChange={(e) => setLanguageName(e.target.value)}
-        placeholder='Nombre (ej: English)'
-      />
-      <button onClick={handleCreateLanguage}>Crear lenguaje</button>
-
-      <ul>
+      <h4>Selecciona un lenguaje</h4>
+      <select
+        value={selectedLanguageId ?? ''}
+        onChange={(e) => setSelectedLanguageId(Number(e.target.value))}
+      >
+        <option value=''>-- Elegir lenguaje --</option>
         {languages.map((lang) => (
-          <li key={lang.language_id}>
-            {lang.language_id} - [{lang.code}] {lang.language_name}
-          </li>
+          <option key={lang.language_id} value={lang.language_id}>
+            [{lang.code}] {lang.language_name}
+          </option>
         ))}
-      </ul>
+      </select>
+
+      <hr />
+      <h3>Test Crear Card</h3>
+
+      <label>Usuario:</label>
+      <select
+        value={selectedUserId ?? ''}
+        onChange={(e) => setSelectedUserId(Number(e.target.value))}
+      >
+        <option value=''>-- Seleccionar usuario --</option>
+        {users.map((u) => (
+          <option key={u.user_id} value={u.user_id}>
+            {u.username}
+          </option>
+        ))}
+      </select>
+
+      <label>Lenguaje:</label>
+      <select
+        value={selectedLanguageId ?? ''}
+        onChange={(e) => setSelectedLanguageId(Number(e.target.value))}
+      >
+        <option value=''>-- Seleccionar lenguaje --</option>
+        {languages.map((l) => (
+          <option key={l.language_id} value={l.language_id}>
+            {l.language_name}
+          </option>
+        ))}
+      </select>
+
+      <button onClick={handleCreateCard}>Crear card</button>
     </div>
   )
 }

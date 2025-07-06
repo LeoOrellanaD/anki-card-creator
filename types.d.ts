@@ -7,6 +7,9 @@ interface Window {
     createLanguage: (payload: CreateLanguageInput) => Promise<number>
     getLanguage: (id: number) => Promise<Language | undefined>
     getLanguages: () => Promise<Language[]>
+    createCard: (payload: CreateCardInput) => Promise<number>
+    getCard: (id: number) => Promise<Card | undefined>
+    getCards: () => Promise<Card[]>
   }
 }
 
@@ -38,6 +41,9 @@ type EventPayloadMapping = {
   createLanguage: [CreateLanguageInput, number]
   getLanguage: [number, Language | undefined]
   getLanguages: [undefined, Language[]]
+  createCard: [CreateCardInput, number]
+  getCard: [number, Card | undefined]
+  getCards: [undefined, Card[]]
 }
 
 interface User {
@@ -61,3 +67,5 @@ interface Card {
   language_id: number
   user_id: number
 }
+
+type CreateCardInput = Omit<Card, 'id'>

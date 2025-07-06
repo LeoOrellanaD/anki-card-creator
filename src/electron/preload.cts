@@ -10,6 +10,9 @@ contextBridge.exposeInMainWorld('electron', {
   createLanguage: (payload) => ipcInvoke('createLanguage', payload),
   getLanguage: (payload) => ipcInvoke('getLanguage', payload),
   getLanguages: () => ipcInvoke('getLanguages', undefined),
+  createCard: (payload) => ipcInvoke('createCard', payload),
+  getCard: (payload) => ipcInvoke('getCard', payload),
+  getCards: () => ipcInvoke('getCards', undefined),
 } satisfies Window['electron']) // use to apply the type from the window object instead of doing this for each function
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(

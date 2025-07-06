@@ -7,7 +7,7 @@ export function saveAudioFile(
   text: string,
   ext: 'mp3' | 'wav'
 ): string {
-  const audioDir = path.join(app.getPath('documents'), 'audios')
+  const audioDir = path.join(app.getPath('userData'), 'audios')
 
   if (!fs.existsSync(audioDir)) {
     fs.mkdirSync(audioDir, { recursive: true })
@@ -15,7 +15,7 @@ export function saveAudioFile(
 
   const files = fs.readdirSync(audioDir)
   const indexes = files
-    .map((f) => parseInt(f.split('_')[0])) 
+    .map((f) => parseInt(f.split('_')[0]))
     .filter((n) => !isNaN(n))
 
   const index = indexes.length > 0 ? Math.max(...indexes) + 1 : 1
@@ -28,3 +28,4 @@ export function saveAudioFile(
   fs.copyFileSync(tempPath, finalPath)
   return finalPath
 }
+
