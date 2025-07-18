@@ -16,7 +16,7 @@
     "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
     "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
     "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
-    "postinstall": "@electron/rebuild"
+    "postinstall": "electron-rebuild"
   },
   "dependencies": {
     "better-sqlite3": "^12.1.1",
@@ -33,7 +33,7 @@
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.9.0",
     "cross-env": "^7.0.3",
-    "electron": "^36.3.1",
+    "electron": "^37.2.1",
     "electron-builder": "^26.0.12",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
