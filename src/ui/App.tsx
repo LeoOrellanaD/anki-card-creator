@@ -1,75 +1,75 @@
-import { useEffect, useState } from 'react'
-import voicesEdge from './data/voices-edge'
+import { useEffect, useState } from "react";
+import voicesEdge from "./data/voices-edge";
 
 function App() {
-  const [text, setText] = useState('')
-  const [audioUrl, setAudioUrl] = useState('')
-  const [usernameInput, setUsernameInput] = useState('')
-  const [users, setUsers] = useState<User[]>([])
-  const [selectedUserId, setSelectedUserId] = useState<number | null>(null)
+  const [text, setText] = useState("");
+  const [audioUrl, setAudioUrl] = useState("");
+  const [usernameInput, setUsernameInput] = useState("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [selectedLanguageId, setSelectedLanguageId] = useState<number | null>(
-    null
-  )
-  const [languages, setLanguages] = useState<Language[]>([])
+    null,
+  );
+  const [languages, setLanguages] = useState<Language[]>([]);
 
-  const langsEdge = Object.keys(voicesEdge)
-  const [lang, setLang] = useState(langsEdge[0])
-  const [voice, setVoice] = useState(voicesEdge[langsEdge[0]][0].voice)
+  const langsEdge = Object.keys(voicesEdge);
+  const [lang, setLang] = useState(langsEdge[0]);
+  const [voice, setVoice] = useState(voicesEdge[langsEdge[0]][0].voice);
 
   const handleGenerate = async () => {
     const base64Audio = await window.electron.getAudioEdge({
       text,
       voice,
       lang,
-    })
-    setAudioUrl(base64Audio)
-  }
+    });
+    setAudioUrl(base64Audio);
+  };
 
   const getCurrentDate = (): string => {
-    const now = new Date()
-    return now.toISOString().split('T')[0]
-  }
+    const now = new Date();
+    return now.toISOString().split("T")[0];
+  };
 
   const handleCreateUser = async () => {
-    if (!usernameInput.trim()) return
-    await window.electron.createUser({ username: usernameInput })
-    setUsernameInput('')
-    loadUsers()
-  }
+    if (!usernameInput.trim()) return;
+    await window.electron.createUser({ username: usernameInput });
+    setUsernameInput("");
+    loadUsers();
+  };
 
   const loadUsers = async () => {
-    const result = await window.electron.getUsers()
-    setUsers(result)
-  }
+    const result = await window.electron.getUsers();
+    setUsers(result);
+  };
 
   const loadLanguages = async () => {
-    const langs = await window.electron.getLanguages()
-    setLanguages(langs)
-  }
+    const langs = await window.electron.getLanguages();
+    setLanguages(langs);
+  };
 
   const handleCreateCard = async () => {
-    if (!selectedUserId || !selectedLanguageId) return
+    if (!selectedUserId || !selectedLanguageId) return;
     const card = {
       date: getCurrentDate(),
       language_id: selectedLanguageId,
       user_id: selectedUserId,
-    }
-    await window.electron.createCard(card)
-  }
+    };
+    await window.electron.createCard(card);
+  };
 
   useEffect(() => {
-    loadUsers()
-    loadLanguages()
-  }, [])
+    loadUsers();
+    loadLanguages();
+  }, []);
 
   return (
     <div>
       <select
         value={lang}
         onChange={(e) => {
-          const newLang = e.target.value
-          setLang(newLang)
-          setVoice(voicesEdge[newLang][0].voice)
+          const newLang = e.target.value;
+          setLang(newLang);
+          setVoice(voicesEdge[newLang][0].voice);
         }}
       >
         {langsEdge.map((l) => (
@@ -90,7 +90,7 @@ function App() {
       <input
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder='Escribe un texto'
+        placeholder="Escribe un texto"
       />
 
       <button onClick={handleGenerate}>Generar audio</button>
@@ -103,7 +103,7 @@ function App() {
       <input
         value={usernameInput}
         onChange={(e) => setUsernameInput(e.target.value)}
-        placeholder='Nombre de usuario'
+        placeholder="Nombre de usuario"
       />
       <button onClick={handleCreateUser}>Crear usuario</button>
 
@@ -120,10 +120,10 @@ function App() {
 
       <h4>Selecciona un lenguaje</h4>
       <select
-        value={selectedLanguageId ?? ''}
+        value={selectedLanguageId ?? ""}
         onChange={(e) => setSelectedLanguageId(Number(e.target.value))}
       >
-        <option value=''>-- Elegir lenguaje --</option>
+        <option value="">-- Elegir lenguaje --</option>
         {languages.map((lang) => (
           <option key={lang.language_id} value={lang.language_id}>
             [{lang.code}] {lang.language_name}
@@ -136,10 +136,10 @@ function App() {
 
       <label>Usuario:</label>
       <select
-        value={selectedUserId ?? ''}
+        value={selectedUserId ?? ""}
         onChange={(e) => setSelectedUserId(Number(e.target.value))}
       >
-        <option value=''>-- Seleccionar usuario --</option>
+        <option value="">-- Seleccionar usuario --</option>
         {users.map((u) => (
           <option key={u.user_id} value={u.user_id}>
             {u.username}
@@ -149,10 +149,10 @@ function App() {
 
       <label>Lenguaje:</label>
       <select
-        value={selectedLanguageId ?? ''}
+        value={selectedLanguageId ?? ""}
         onChange={(e) => setSelectedLanguageId(Number(e.target.value))}
       >
-        <option value=''>-- Seleccionar lenguaje --</option>
+        <option value="">-- Seleccionar lenguaje --</option>
         {languages.map((l) => (
           <option key={l.language_id} value={l.language_id}>
             {l.language_name}
@@ -162,10 +162,7 @@ function App() {
 
       <button onClick={handleCreateCard}>Crear card</button>
     </div>
-  )
+  );
 }
 
-export default App
-
-
-
+export default App;

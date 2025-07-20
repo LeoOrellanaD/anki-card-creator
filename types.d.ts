@@ -44,6 +44,8 @@ type EventPayloadMapping = {
   createCard: [CreateCardInput, number]
   getCard: [number, Card | undefined]
   getCards: [undefined, Card[]]
+  saveConfig: [Config, undefined]
+  getConfig: [undefined, Config | undefined]
 }
 
 interface User {
@@ -69,3 +71,9 @@ interface Card {
 }
 
 type CreateCardInput = Omit<Card, 'id'>
+
+interface Config {
+  theme: string
+  language: string
+  languageList: string[]
+}

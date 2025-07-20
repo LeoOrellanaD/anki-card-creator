@@ -1,0 +1,89 @@
+.
+├── README.md
+├── app.db
+├── dist-electron
+│   ├── db
+│   │   ├── database.js
+│   │   └── init.js
+│   ├── ipc
+│   │   ├── CardHandler.js
+│   │   ├── LanguageHandler.js
+│   │   ├── UserHandler.js
+│   │   ├── ttsHandlerEdge.js
+│   │   └── ttsHandlerKokoro.js
+│   ├── main.js
+│   ├── models
+│   │   ├── CardModel.js
+│   │   ├── LanguageModel.js
+│   │   └── UserModel.js
+│   ├── pathResolver.js
+│   ├── preload.cjs
+│   ├── services
+│   │   ├── CardService.js
+│   │   ├── EdgeTTSService.js
+│   │   ├── KokoroTTsService.js
+│   │   ├── LanguageService.js
+│   │   └── UserService.js
+│   ├── utils
+│   │   ├── audioCleaner.js
+│   │   ├── audioSaver.js
+│   │   ├── logger.js
+│   │   └── ttsHelpers.js
+│   └── utils.js
+├── electron-builder.json
+├── eslint.config.js
+├── estructura.txt
+├── index.html
+├── package-lock.json
+├── package.json
+├── spaceKat.jpg
+├── spacekat.ico
+├── src
+│   ├── electron
+│   │   ├── db
+│   │   │   ├── database.ts
+│   │   │   └── init.ts
+│   │   ├── ipc
+│   │   │   ├── CardHandler.ts
+│   │   │   ├── LanguageHandler.ts
+│   │   │   ├── UserHandler.ts
+│   │   │   ├── ttsHandlerEdge.ts
+│   │   │   └── ttsHandlerKokoro.ts
+│   │   ├── main.ts
+│   │   ├── models
+│   │   │   ├── CardModel.ts
+│   │   │   ├── LanguageModel.ts
+│   │   │   └── UserModel.ts
+│   │   ├── pathResolver.ts
+│   │   ├── preload.cts
+│   │   ├── services
+│   │   │   ├── CardService.ts
+│   │   │   ├── EdgeTTSService.ts
+│   │   │   ├── KokoroTTsService.ts
+│   │   │   ├── LanguageService.ts
+│   │   │   └── UserService.ts
+│   │   ├── tsconfig.json
+│   │   ├── utils
+│   │   │   ├── audioCleaner.ts
+│   │   │   ├── audioSaver.ts
+│   │   │   ├── logger.ts
+│   │   │   └── ttsHelpers.ts
+│   │   └── utils.ts
+│   └── ui
+│       ├── App.css
+│       ├── App.tsx
+│       ├── assets
+│       │   └── react.svg
+│       ├── data
+│       │   ├── voice-kokoro.ts
+│       │   └── voices-edge.ts
+│       ├── index.css
+│       ├── main.tsx
+│       └── vite-env.d.ts
+├── tsconfig.app.json
+├── tsconfig.json
+├── tsconfig.node.json
+├── types.d.ts
+└── vite.config.ts
+
+17 directories, 70 files

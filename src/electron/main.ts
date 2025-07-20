@@ -11,6 +11,7 @@ import './ipc/ttsHandlerEdge.js'
 import './ipc/UserHandler.js'
 import './ipc/LanguageHandler.js'
 import './ipc/CardHandler.js'
+import './ipc/ConfigHandler.js'
 
 app.on('ready', () => {
   initDatabase()
