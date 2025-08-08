@@ -6,7 +6,6 @@ import { initDatabase } from './db/init.js'
 
 import { cleanAudioDir } from './utils/audioCleaner.js'
 
-import './ipc/ttsHandlerKokoro.js'
 import './ipc/ttsHandlerEdge.js'
 import './ipc/UserHandler.js'
 import './ipc/LanguageHandler.js'

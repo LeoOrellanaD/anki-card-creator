@@ -1,8 +1,11 @@
 import { ipcMainHandle } from '../utils.js'
 import { getConfig, saveConfig } from '../utils/userConfig.js'
 
-ipcMainHandle('getConfig', () => getConfig())
+ipcMainHandle('getConfig', async () => {
+  return getConfig()
+})
+
 ipcMainHandle('saveConfig', async (config) => {
-  saveConfig(config)
-  return undefined // this fix the problem with async situacion with the create file config
+  await saveConfig(config)
+  return { success: true }
 })

@@ -1,6 +1,6 @@
+// === INTERFACES GLOBALES ===
 interface Window {
   electron: {
-    getAudioKokoro: (payload: ttsKokoro) => Promise<string>
     getAudioEdge: (payload: ttsEdge) => Promise<string>
     createUser: (payload: CreateUserInput) => Promise<number>
     getUsers: () => Promise<User[]>
@@ -10,18 +10,16 @@ interface Window {
     createCard: (payload: CreateCardInput) => Promise<number>
     getCard: (id: number) => Promise<Card | undefined>
     getCards: () => Promise<Card[]>
+    getConfig: () => Promise<Config>
+    saveConfig: (payload: Config) => Promise<{ success: boolean }>
   }
 }
 
+// === TIPOS PARA TTS ===
 type ttsEdge = {
   text: string
   voice: string
   lang: string
-}
-
-type ttsKokoro = {
-  text: string
-  voice: voice
 }
 
 type VoiceOption = {
@@ -33,21 +31,7 @@ type VoiceMap = {
   [lang: string]: VoiceOption[]
 }
 
-type EventPayloadMapping = {
-  generateAudioEdge: [ttsEdge, string] // [INPUT, OUTPUT]
-  generateAudioKokoro: [ttsKokoro, string]
-  createUser: [CreateUserInput, number]
-  getUsers: [undefined, User[]]
-  createLanguage: [CreateLanguageInput, number]
-  getLanguage: [number, Language | undefined]
-  getLanguages: [undefined, Language[]]
-  createCard: [CreateCardInput, number]
-  getCard: [number, Card | undefined]
-  getCards: [undefined, Card[]]
-  saveConfig: [Config, undefined]
-  getConfig: [undefined, Config | undefined]
-}
-
+// === TIPOS PARA USUARIOS ===
 interface User {
   user_id: number
   username: string
@@ -55,6 +39,7 @@ interface User {
 
 type CreateUserInput = Omit<User, 'user_id'>
 
+// === TIPOS PARA LENGUAJES ===
 interface Language {
   language_id: number
   code: string
@@ -63,6 +48,7 @@ interface Language {
 
 type CreateLanguageInput = Omit<Language, 'language_id'>
 
+// === TIPOS PARA TARJETAS ===
 interface Card {
   id: number
   date: string
@@ -72,8 +58,62 @@ interface Card {
 
 type CreateCardInput = Omit<Card, 'id'>
 
+// === TIPOS PARA CONFIGURACIÓN ===
 interface Config {
-  theme: string
+  theme: 'light' | 'dark'
   language: string
   languageList: string[]
+}
+
+// === MAPEO DE EVENTOS ===
+type EventPayloadMapping = {
+  generateAudioEdge: [ttsEdge, string] // [INPUT, OUTPUT]
+  createUser: [CreateUserInput, number]
+  getUsers: [undefined, User[]]
+  createLanguage: [CreateLanguageInput, number]
+  getLanguage: [number, Language | undefined]
+  getLanguages: [undefined, Language[]]
+  createCard: [CreateCardInput, number]
+  getCard: [number, Card | undefined]
+  getCards: [undefined, Card[]]
+  saveConfig: [Config, { success: boolean }]
+  getConfig: [undefined, Config]
+  createDeck: [string, boolean] // o any si no te interesa el retorno exacto
+  addCard: [AddCardPayload]
+}
+
+// === TIPOS PARA ANKI ===
+
+type CardPayload = {
+  deckName: string
+  front: string
+  back: string
+  audioPath?: string
+  audioFilename?: string
+}
+
+interface AnkiRequest {
+  action: string
+  version: number
+  params?: Record<string, unknown>
+}
+
+interface AnkiAudio {
+  path: string
+  filename: string
+  fields: string[]
+}
+
+interface AnkiCard {
+  deckName: string
+  modelName: string
+  fields: {
+    Front: string
+    Back: string
+  }
+  options: {
+    allowsDuplicate: boolean
+  }
+  tags?: string[]
+  audio?: AnkiAudio
 }

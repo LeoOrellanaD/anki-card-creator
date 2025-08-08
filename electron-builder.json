@@ -4,17 +4,26 @@
     "**/node_modules/better-sqlite3/**/*",
     "**/node_modules/node-edge-tts/**/*"
   ],
-  "files": ["dist-electron", "dist-react"],
+  "files": [
+    "dist-electron",
+    "dist-react",
+    "!node_modules/@tailwindcss/oxide-wasm32-wasi/**/*"
+  ],
   "extraResources": ["dist-electron/preload.cjs", "src/assets/**"],
-  "icon": "./spacekat.ico",
+  "directories": {
+    "buildResources": "build"
+  },
+  "icon": "spacekat.jpg",
   "mac": {
     "target": "dmg"
   },
   "linux": {
-    "target": "AppImage",
-    "category": "Utility"
+    "target": ["AppImage", "deb"],
+    "category": "Utility",
+    "icon": "spacekat.jpg"
   },
   "win": {
-    "target": ["portable", "msi"]
+    "target": ["portable", "msi"],
+    "icon": "spacekat.ico"
   }
 }

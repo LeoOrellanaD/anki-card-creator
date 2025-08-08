@@ -1,6 +1,9 @@
 {
   "name": "anki-card-creator",
-  "author": "Lyleo",
+  "author": {
+    "name": "Lyleo",
+    "email": "skyzir12@gmail.com"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,14 +19,19 @@
     "dist:mac": "npm run transpile:electron && npm run build && electron-builder --mac --arm64",
     "dist:win": "npm run transpile:electron && npm run build && electron-builder --win --x64",
     "dist:linux": "npm run transpile:electron && npm run build && electron-builder --linux --x64",
-    "postinstall": "electron-rebuild"
+    "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.11",
+    "axios": "^1.11.0",
     "better-sqlite3": "^12.1.1",
-    "kokoro-js": "^1.2.1",
+    "i18next": "^25.3.2",
     "node-edge-tts": "^1.2.8",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "react-i18next": "^15.6.1",
+    "react-router-dom": "^7.7.1",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@electron/rebuild": "^4.0.1",

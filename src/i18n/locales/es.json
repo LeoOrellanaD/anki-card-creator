@@ -1,0 +1,30 @@
+{
+  "welcome": "Bienvenido a Anki Card Creator",
+
+  "button.config": "Comenzar",
+
+  "COMMENT2": "Página de Configuración",
+
+  "settings": "Configuración",
+  "theme": "Tema",
+  "light": "Claro",
+  "dark": "Oscuro",
+  "language": "Idioma",
+  "select_languages": "Seleccionar Idiomas",
+  "back": "Atrás",
+  "continue": "Continuar",
+  "back_to_home": "Volver a Inicio",
+  "loading": "Cargando...",
+  "languages": {
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "de": "Alemán",
+    "pt": "Portugués",
+    "ja": "Japones",
+    "zh": "Chino",
+    "it": "Italiano",
+    "ru": "Ruso",
+    "ko": "Coreano"
+  }
+}
