@@ -1,85 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useSettings } from '../hooks/useSettings'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { ALL_LANGUAGES, MAIN_LANGUAGES } from '../data/languages'
 
 export const Settings = () => {
-  const { t, i18n } = useTranslation()
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const location = useLocation()
 
-  const [config, setConfig] = useState<Config>({
-    theme: 'light',
-    language: '',
-    languageList: [],
-  })
-
-  const [loading, setLoading] = useState(true)
   const from = location.state?.from || '/'
-  const mainLanguages = ['en', 'es']
-  const allLanguages = [
-    'en',
-    'es',
-    'fr',
-    'de',
-    'pt',
-    'ja',
-    'zh',
-    'it',
-    'ru',
-    'ko',
-  ]
 
-  useEffect(() => {
-    loadConfig()
-  }, [])
-
-  const loadConfig = async () => {
-    try {
-      if (window.electron) {
-        const savedConfig = await window.electron.getConfig()
-        console.log(savedConfig)
-        setConfig(savedConfig)
-        await i18n.changeLanguage(savedConfig.language)
-      }
-    } catch (error) {
-      console.error('Error loading config:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const saveConfiguration = async (newConfig: Config) => {
-    try {
-      if (window.electron) {
-        await window.electron.saveConfig(newConfig)
-        setConfig(newConfig)
-        console.log(newConfig)
-      }
-    } catch (error) {
-      console.error('Error saving config:', error)
-    }
-  }
-
-  const handleThemeChange = async (theme: 'light' | 'dark') => {
-    const newConfig = { ...config, theme }
-    await saveConfiguration(newConfig)
-  }
-
-  const handleLanguageChange = async (language: string) => {
-    const newConfig = { ...config, language }
-    await saveConfiguration(newConfig)
-    await i18n.changeLanguage(language)
-  }
-
-  const handleLanguageToggle = async (langCode: string) => {
-    const isSelected = config.languageList.includes(langCode)
-    const newLanguageList = isSelected
-      ? config.languageList.filter((code) => code !== langCode)
-      : [...config.languageList, langCode]
-
-    const newConfig = { ...config, languageList: newLanguageList }
-    await saveConfiguration(newConfig)
-  }
+  const {
+    config,
+    loading,
+    handleThemeChange,
+    handleLanguageChange,
+    handleLanguageToggle,
+    saveConfiguration,
+  } = useSettings()
 
   if (loading) {
     return (
@@ -96,7 +34,6 @@ export const Settings = () => {
           {t('settings')}
         </h1>
 
-        {/* Sección de Tema */}
         <div className='mb-8'>
           <h2 className='text-xl font-semibold text-gray-700 mb-4'>
             {t('theme')}
@@ -125,13 +62,12 @@ export const Settings = () => {
           </div>
         </div>
 
-        {/* Sección de Idioma Principal (solo español e inglés) */}
         <div className='mb-8'>
           <h2 className='text-xl font-semibold text-gray-700 mb-4'>
             {t('language')}
           </h2>
           <div className='grid grid-cols-2 gap-3'>
-            {mainLanguages.map((lang) => (
+            {MAIN_LANGUAGES.map((lang) => (
               <button
                 key={lang}
                 onClick={() => handleLanguageChange(lang)}
@@ -147,13 +83,12 @@ export const Settings = () => {
           </div>
         </div>
 
-        {/* Sección de Idiomas Seleccionables */}
         <div className='mb-8'>
           <h2 className='text-xl font-semibold text-gray-700 mb-4'>
             {t('select_languages')}
           </h2>
           <div className='grid grid-cols-2 sm:grid-cols-3 gap-3'>
-            {allLanguages.map((langCode) => (
+            {ALL_LANGUAGES.map((langCode) => (
               <button
                 key={langCode}
                 onClick={() => handleLanguageToggle(langCode)}
@@ -172,7 +107,6 @@ export const Settings = () => {
           </div>
         </div>
 
-        {/* Botones de acción */}
         <div className='flex flex-col sm:flex-row gap-4 justify-center'>
           <button
             onClick={() => navigate(from)}
