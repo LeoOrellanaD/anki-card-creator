@@ -3,6 +3,12 @@ import { useTranslation } from 'react-i18next'
 
 export const useSettings = () => {
   const { i18n } = useTranslation()
+
+  const [toast, setToast] = useState<{
+    message: string
+    type: 'success' | 'error'
+  } | null>(null)
+
   const [config, setConfig] = useState<Config>({
     theme: 'light',
     language: '',
@@ -15,7 +21,6 @@ export const useSettings = () => {
     try {
       if (window.electron) {
         const savedConfig = await window.electron.getConfig()
-        console.log(savedConfig)
         setConfig(savedConfig)
       }
     } catch (error) {
@@ -30,10 +35,11 @@ export const useSettings = () => {
       if (window.electron) {
         await window.electron.saveConfig(newConfig)
         setConfig(newConfig)
-        console.log(newConfig)
+        setToast({ message: 'settings_saved', type: 'success' })
       }
     } catch (error) {
       console.error('Error saving config:', error)
+      setToast({ message: 'save_error', type: 'error' })
     }
   }
 
@@ -63,6 +69,8 @@ export const useSettings = () => {
   }, [])
 
   return {
+    toast,
+    setToast,
     config,
     loading,
     saveConfiguration,

@@ -117,3 +117,10 @@ interface AnkiCard {
   tags?: string[]
   audio?: AnkiAudio
 }
+
+type ToastProps = {
+  message: string
+  type: 'success' | 'error' | 'info'
+  duration?: number
+  onClose?: () => void
+}
