@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
-import { Welcome } from '../pages/Welcome.tsx'
-import { Settings } from '../pages/Settings.tsx'
+import Welcome from '@/ui/pages/Welcome.tsx'
+import Settings from '@/ui/pages/Settings.tsx'
 
 export const AppRoutes = () => {
   return (

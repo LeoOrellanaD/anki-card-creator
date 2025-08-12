@@ -1,12 +1,16 @@
 import { HashRouter } from 'react-router-dom'
-import { AppRoutes } from './routes/AppRoutes.tsx'
+import { SettingsProvider } from '@/ui/context/SettingsContext'
+import { AppRoutes } from '@/ui/routes/AppRoutes.tsx'
+
 import '../i18n/i18n.ts'
 
 function App() {
   return (
-    <HashRouter>
-      <AppRoutes />
-    </HashRouter>
+    <SettingsProvider>
+      <HashRouter>
+        <AppRoutes />
+      </HashRouter>
+    </SettingsProvider>
   )
 }
 

@@ -8,7 +8,7 @@ type ToastProps = {
   onClose?: () => void
 }
 
-export const Toast = ({
+const Toast = ({
   message,
   type = 'success',
   duration = 2000,
@@ -20,7 +20,7 @@ export const Toast = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false)
-      setTimeout(() => onClose?.(), 300) // Espera a que termine la animación
+      setTimeout(() => onClose?.(), 300)
     }, duration)
 
     return () => clearTimeout(timer)
@@ -46,3 +46,5 @@ export const Toast = ({
     </div>
   )
 }
+
+export default Toast

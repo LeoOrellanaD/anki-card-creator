@@ -1,15 +1,17 @@
 import { ALL_LANGUAGES } from '@/ui/data/languages'
 import { useTranslation } from 'react-i18next'
 
-export const AllLanguageSelector = ({
-  title,
-  languageList,
-  onChange,
-}: {
+type AllLanguageSelectorProps = {
   title: string
   languageList: string[]
   onChange: (language: string) => void
-}) => {
+}
+
+const AllLanguageSelector = ({
+  title,
+  languageList,
+  onChange,
+}: AllLanguageSelectorProps) => {
   const { t } = useTranslation()
   return (
     <section className='mb-8'>
@@ -33,3 +35,5 @@ export const AllLanguageSelector = ({
     </section>
   )
 }
+
+export default AllLanguageSelector

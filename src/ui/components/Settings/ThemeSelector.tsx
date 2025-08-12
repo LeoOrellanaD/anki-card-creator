@@ -1,4 +1,4 @@
-export const ThemeSelector = ({
+const ThemeSelector = ({
   title,
   buttonLight,
   buttonDark,
@@ -41,3 +41,5 @@ export const ThemeSelector = ({
     </section>
   )
 }
+
+export default ThemeSelector

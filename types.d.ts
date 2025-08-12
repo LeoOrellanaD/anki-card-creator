@@ -124,3 +124,15 @@ type ToastProps = {
   duration?: number
   onClose?: () => void
 }
+
+type ToastType = { message: string; type: 'success' | 'error' } | null
+
+type SettingsContextType = {
+  config: Config
+  draftConfig: Config
+  loading: boolean
+  handleThemeChange: (theme: 'light' | 'dark') => void
+  handleLanguageChange: (lang: string) => void
+  handleLanguageToggle: (langCode: string) => void
+  saveConfiguration: () => Promise<void>
+}
