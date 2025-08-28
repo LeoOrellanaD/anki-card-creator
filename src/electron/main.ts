@@ -15,6 +15,10 @@ import './ipc/ConfigHandler.js'
 app.on('ready', () => {
   initDatabase()
   const mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
     webPreferences: {
       preload: getPreloadPath(),
     },
