@@ -8,19 +8,19 @@ const Welcome = () => {
   const { loading } = useSettings()
 
   if (loading) {
-    return <div className='text-center p-4'>{t('loading')}</div>
+    return <div className="p-4 text-center">{t('loading')}</div>
   }
 
   return (
-    <main className='bg-white text-black dark:bg-gray-900 flex flex-col items-center justify-center min-h-screen p-4'>
-      <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-center'>
-        {t('welcome')}
+    <main className="flex min-h-screen flex-col items-center justify-center bg-white p-4 text-black dark:bg-gray-900">
+      <h1 className="text-center text-3xl font-bold sm:text-4xl md:text-5xl lg:text-6xl">
+        {t('welcomePage.title')}
       </h1>
       <button
         onClick={() => navigate('/settings', { state: { from: '/welcome' } })}
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+        className="rounded-full bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700"
       >
-        {t('button.config')}
+        {t('welcomePage.button.config')}
       </button>
     </main>
   )

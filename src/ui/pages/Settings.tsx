@@ -31,30 +31,30 @@ const Settings = () => {
   const handleSave = async () => {
     try {
       await saveConfiguration()
-      setToast({ message: 'settings.saved', type: 'success' })
+      setToast({ message: t('toast_save'), type: 'success' })
     } catch (error) {
-      setToast({ message: 'settings.save_error', type: 'error' })
+      setToast({ message: t('toast_save_error'), type: 'error' })
       console.log(error)
     }
   }
 
   if (loading) {
     return (
-      <main className='flex items-center justify-center min-h-screen'>
+      <main className="flex min-h-screen items-center justify-center">
         <p>{t('loading')}</p>
       </main>
     )
   }
 
   return (
-    <main className='flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800'>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 dark:from-gray-900 dark:to-gray-800">
       <header>
-        <h1 className='text-3xl sm:text-4xl font-bold text-center text-gray-800 dark:text-white mb-8'>
-          {t('settings')}
+        <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
+          {t('settingsPage.title')}
         </h1>
       </header>
 
-      <div className='bg-white text-black dark:bg-gray-900 dark:text-white p-6 rounded-lg shadow-lg w-full max-w-2xl space-y-6'>
+      <div className="w-full max-w-2xl space-y-6 rounded-lg bg-white p-6 text-black shadow-lg dark:bg-gray-900 dark:text-white">
         <ThemeSelector
           title={t('theme')}
           buttonLight={t('light')}
@@ -76,18 +76,18 @@ const Settings = () => {
         />
       </div>
 
-      <footer className='flex flex-col sm:flex-row gap-4 justify-center mt-8'>
+      <footer className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
         {from === '/welcome' ? (
           <button
             onClick={() => navigate('/')}
-            className='px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg'
+            className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg"
           >
             {t('continue')}
           </button>
         ) : (
           <button
             onClick={() => navigate('/')}
-            className='px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg'
+            className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg"
           >
             {t('back_to_home')}
           </button>
@@ -95,7 +95,7 @@ const Settings = () => {
 
         <button
           onClick={handleSave}
-          className='px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200 shadow-md hover:shadow-lg'
+          className="rounded-lg bg-green-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-green-700 hover:shadow-lg"
         >
           {t('save')}
         </button>

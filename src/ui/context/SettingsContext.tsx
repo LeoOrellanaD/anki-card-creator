@@ -1,6 +1,6 @@
-// src/ui/context/SettingsContext.tsx
-import { createContext, useContext, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { createContext, useContext, useState, useEffect } from 'react'
+import type { ConfigService } from '@/ui/services/configService'
+import { electronConfigService } from '@/ui/services/configService'
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
   undefined
@@ -8,10 +8,13 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 
 interface SettingsProviderProps {
   children: React.ReactNode
+  service?: ConfigService
 }
 
-export const SettingsProvider = ({ children }: SettingsProviderProps) => {
-  const { i18n } = useTranslation()
+export const SettingsProvider = ({
+  children,
+  service = electronConfigService,
+}: SettingsProviderProps) => {
   const [config, setConfig] = useState<Config>({
     theme: 'light',
     language: '',
@@ -21,63 +24,22 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const [draftConfig, setDraftConfig] = useState<Config>(config)
   const [loading, setLoading] = useState(true)
 
-  const loadConfig = async () => {
-    try {
-      if (window.electron) {
-        const savedConfig = await window.electron.getConfig()
-        console.log('Configuration loaded', savedConfig)
-
-        if (savedConfig.theme === 'dark') {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-
-        if (savedConfig.language) {
-          await i18n.changeLanguage(savedConfig.language)
-        }
-
-        setConfig(savedConfig)
-        setDraftConfig(savedConfig)
-      }
-    } catch (error) {
-      console.error('Error loading config:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   const saveConfiguration = async () => {
     try {
-      if (window.electron) {
-        await window.electron.saveConfig(draftConfig)
-        setConfig(draftConfig)
-
-        // Aplicar cambios a la UI
-        if (draftConfig.theme === 'dark') {
-          document.documentElement.classList.add('dark')
-        } else {
-          document.documentElement.classList.remove('dark')
-        }
-
-        if (draftConfig.language) {
-          await i18n.changeLanguage(draftConfig.language)
-        }
-      }
-    } catch (error) {
-      console.error('Error saving config:', error)
+      await service.saveConfig(draftConfig)
+      setConfig(draftConfig)
+    } catch (err) {
+      console.error('Error saving config:', err)
     }
   }
 
-  const handleThemeChange = (theme: 'light' | 'dark') => {
+  const handleThemeChange = (theme: 'light' | 'dark') =>
     setDraftConfig((prev) => ({ ...prev, theme }))
-  }
 
-  const handleLanguageChange = (language: string) => {
+  const handleLanguageChange = (language: string) =>
     setDraftConfig((prev) => ({ ...prev, language }))
-  }
 
-  const handleLanguageToggle = (langCode: string) => {
+  const handleLanguageToggle = (langCode: string) =>
     setDraftConfig((prev) => {
       const isSelected = prev.languageList.includes(langCode)
       const newList = isSelected
@@ -85,11 +47,22 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
         : [...prev.languageList, langCode]
       return { ...prev, languageList: newList }
     })
-  }
 
   useEffect(() => {
+    const loadConfig = async () => {
+      try {
+        const savedConfig = await service.getConfig()
+        setConfig(savedConfig)
+        setDraftConfig(savedConfig)
+      } catch (err) {
+        console.error('Error loading config:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadConfig()
-  }, [])
+  }, [service])
 
   return (
     <SettingsContext.Provider
@@ -109,8 +82,7 @@ export const SettingsProvider = ({ children }: SettingsProviderProps) => {
 }
 
 export const useSettings = () => {
-  const context = useContext(SettingsContext)
-  if (!context)
-    throw new Error('useSettings must be used within SettingsProvider')
-  return context
+  const ctx = useContext(SettingsContext)
+  if (!ctx) throw new Error('useSettings must be used within SettingsProvider')
+  return ctx
 }

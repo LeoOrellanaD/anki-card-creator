@@ -3,8 +3,6 @@
 
   "button.config": "Comenzar",
 
-  "COMMENT2": "Página de Configuración",
-
   "settings": "Configuración",
   "theme": "Tema",
   "light": "Claro",
@@ -15,8 +13,13 @@
   "continue": "Continuar",
   "back_to_home": "Volver a Inicio",
   "loading": "Cargando...",
+  "system'_languages": {
+    "en": " Inglés",
+    "es": "Español"
+  },
   "languages": {
-    "en": "Inglés",
+    "en_US": "Inglés Americano",
+    "en_UK": "Inglés Britanico",
     "es": "Español",
     "fr": "Francés",
     "de": "Alemán",
@@ -26,5 +29,7 @@
     "it": "Italiano",
     "ru": "Ruso",
     "ko": "Coreano"
-  }
+  },
+  "toast_save": "Configuración Guardada",
+  "toast_save_error": "Error Al Guardar"
 }

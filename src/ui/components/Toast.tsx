@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 type ToastProps = {
   message: string
@@ -14,7 +13,6 @@ const Toast = ({
   duration = 2000,
   onClose,
 }: ToastProps) => {
-  const { t } = useTranslation()
   const [isVisible, setIsVisible] = useState(true)
 
   useEffect(() => {
@@ -34,14 +32,14 @@ const Toast = ({
 
   return (
     <div
-      className={`fixed bottom-4 right-4 ${bgColor} text-white px-4 py-2 rounded-lg shadow-lg transition-all duration-300 transform ${
+      className={`fixed right-4 bottom-4 ${bgColor} transform rounded-lg px-4 py-2 text-white shadow-lg transition-all duration-300 ${
         isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
       }`}
-      role='alert'
-      aria-live='assertive'
+      role="alert"
+      aria-live="assertive"
     >
-      <div className='flex items-center'>
-        <span>{t(message)}</span>
+      <div className="flex items-center">
+        <span>{message}</span>
       </div>
     </div>
   )
