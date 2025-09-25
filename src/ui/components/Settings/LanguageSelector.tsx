@@ -12,7 +12,7 @@ const LanguageSelector = ({
   language,
   onChange,
 }: LanguageSelectorProps) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('langselector')
   return (
     <section className="mb-8">
       <h2 className="mb-4 text-xl font-semibold text-gray-700">{title}</h2>
@@ -28,7 +28,7 @@ const LanguageSelector = ({
                 : 'border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            {t(`system'_languages.${lang}`)}
+            {t(`system_languages.${lang}`)}
           </button>
         ))}
       </div>

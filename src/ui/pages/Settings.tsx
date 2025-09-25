@@ -9,7 +9,7 @@ import AllLanguageSelector from '@/ui/components/Settings/AllLanguageSelector'
 import Toast from '@/ui/components/Toast'
 
 const Settings = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation('settings')
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from || '/'
@@ -50,7 +50,7 @@ const Settings = () => {
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 dark:from-gray-900 dark:to-gray-800">
       <header>
         <h1 className="mb-8 text-center text-3xl font-bold text-gray-800 sm:text-4xl dark:text-white">
-          {t('settingsPage.title')}
+          {t('title')}
         </h1>
       </header>
 
