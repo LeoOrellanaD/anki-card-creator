@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSettings } from '@/ui/context/SettingsContext'
@@ -15,18 +15,23 @@ const Settings = () => {
   const from = location.state?.from || '/'
 
   const {
-    draftConfig,
     loading,
+    draftConfig,
+    saveConfiguration,
     handleThemeChange,
     handleLanguageChange,
     handleLanguageToggle,
-    saveConfiguration,
+    resetDraftConfig,
   } = useSettings()
 
   const [toast, setToast] = useState<{
     message: string
     type: 'success' | 'error' | 'info'
   } | null>(null)
+
+  useEffect(() => {
+    resetDraftConfig()
+  }, [])
 
   const handleSave = async () => {
     try {
@@ -77,21 +82,12 @@ const Settings = () => {
       </div>
 
       <footer className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-        {from === '/welcome' ? (
-          <button
-            onClick={() => navigate('/')}
-            className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg"
-          >
-            {t('continue')}
-          </button>
-        ) : (
-          <button
-            onClick={() => navigate('/')}
-            className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg"
-          >
-            {t('back_to_home')}
-          </button>
-        )}
+        <button
+          onClick={() => navigate(from === '/welcome' ? '/' : from)}
+          className="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white shadow-md transition-colors duration-200 hover:bg-blue-700 hover:shadow-lg"
+        >
+          {from === '/welcome' ? t('continue') : t('back_to_home')}
+        </button>
 
         <button
           onClick={handleSave}

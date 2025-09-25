@@ -10,7 +10,7 @@ type ToastProps = {
 const Toast = ({
   message,
   type = 'success',
-  duration = 2000,
+  duration = 500,
   onClose,
 }: ToastProps) => {
   const [isVisible, setIsVisible] = useState(true)

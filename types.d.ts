@@ -131,8 +131,10 @@ type SettingsContextType = {
   config: Config
   draftConfig: Config
   loading: boolean
+  isLoaded: boolean
   handleThemeChange: (theme: 'light' | 'dark') => void
   handleLanguageChange: (lang: string) => void
   handleLanguageToggle: (langCode: string) => void
   saveConfiguration: () => Promise<void>
+  resetDraftConfig: () => void
 }
